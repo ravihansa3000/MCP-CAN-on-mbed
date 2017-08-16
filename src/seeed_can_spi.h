@@ -1,5 +1,4 @@
-/* seeed_can_spi.h
- * Copyright (c) 2013 Sophie Dexter
+/* Copyright (c) 2017 Akila Perera, Sophie Dexter
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,6 +12,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 #ifndef _SEEED_CAN_SPI_H_
 #define _SEEED_CAN_SPI_H_
 
@@ -22,56 +22,78 @@
 extern "C" {
 #endif
 
-    /** CAN driver typedefs
-     */
- /// Type definition to hold a Seeed Studios CAN-BUS Shield connections and resources structure
-   struct Seeed_MCP_CAN_Shield {
-        SPI             spi;
-        DigitalOut      ncs;
-        InterruptIn     irq;
-        Seeed_MCP_CAN_Shield(SPI _spi_, DigitalOut _ncs_, InterruptIn _irq_) :
-            spi(_spi_),
-            ncs(_ncs_),
-            irq(_irq_)
-        {}
-    };
-    typedef struct Seeed_MCP_CAN_Shield mcp_can_t;
+/**
+ * CAN driver typedefs.  Type definition to hold a Seeed Studios CAN-BUS Shield connections and resources structure
+ */
+struct Seeed_MCP_CAN_Shield {
+  SPI spi;
+  DigitalOut ncs;
+  InterruptIn irq;
+  Seeed_MCP_CAN_Shield(SPI _spi_, DigitalOut _ncs_, InterruptIn _irq_) : spi(_spi_), ncs(_ncs_), irq(_irq_) {}
+};
+typedef struct Seeed_MCP_CAN_Shield mcp_can_t;
 
-    /** mcp2515 spi instructions
-     */
-    void mcpReset(mcp_can_t *obj);                                      // reset the MCP2515 CAN controller chip
+/**
+ * MCP2515 spi instructions
+ */
 
-    uint8_t mcpRead(mcp_can_t *obj,                                     // read from a single MCP2512 register
-                    const uint8_t address);
-    void mcpReadMultiple(mcp_can_t *obj,                                // read multiple, sequential, registers into an array
-                         const uint8_t address,
-                         uint8_t values[],
-                         const uint8_t n);
-    void mcpReadBuffer(mcp_can_t *obj,                                  // read the specified receive buffer into an array
-                       const uint8_t command,
-                       uint8_t values[],
-                       const uint8_t n);
-    void mcpWrite(mcp_can_t *obj,                                       // write to a single MCP2512 register
-                  const uint8_t address,
-                  const uint8_t value);
-    void mcpWriteMultiple(mcp_can_t *obj,                               // write an array into consecutive MCP2515 registers
-                          const uint8_t address,
-                          const uint8_t values[],
-                          const uint8_t n);
-    void mcpWriteBuffer(mcp_can_t *obj,                                 // write an array into the specified transmit buffer
-                        const uint8_t command,
-                        uint8_t values[],
-                        const uint8_t n);
-    void mcpBufferRTS(mcp_can_t *obj, const uint8_t command);           // initiate transmission of the specified MCP2515 transmit buffer
-    uint8_t mcpStatus(mcp_can_t *obj);                                  // read the MCP2515's status register
-    uint8_t mcpReceiveStatus(mcp_can_t *obj);                           // read mcp2515's receive status register
-    void mcpBitModify(mcp_can_t *obj,                                   // modify bits of a register specified by a mask
-                      const uint8_t address,
-                      const uint8_t mask,
-                      const uint8_t data);
+/**
+ * Reset the MCP2515 CAN controller chip
+ */
+void mcpReset(mcp_can_t *obj);
+
+/**
+ * Read from a single MCP2515 register
+ */
+uint8_t mcpRead(mcp_can_t *obj, const uint8_t address);
+
+/**
+ * Read multiple, sequential, registers into an array
+ */
+void mcpReadMultiple(mcp_can_t *obj, const uint8_t address, uint8_t values[], const uint8_t n);
+
+/**
+ * Read the specified receive buffer into an array
+ */
+void mcpReadBuffer(mcp_can_t *obj, const uint8_t command, uint8_t values[], const uint8_t n);
+
+/**
+ * Write to a single MCP2515 register
+ */
+void mcpWrite(mcp_can_t *obj, const uint8_t address, const uint8_t value);
+
+/**
+ * Write an array into consecutive MCP2515 registers
+ */
+void mcpWriteMultiple(mcp_can_t *obj, const uint8_t address, const uint8_t values[], const uint8_t n);
+
+/**
+ * Write an array into the specified transmit buffer
+ */
+void mcpWriteBuffer(mcp_can_t *obj, const uint8_t command, uint8_t values[], const uint8_t n);
+
+/**
+ * Initiate transmission of the specified MCP2515 transmit buffer
+ */
+void mcpBufferRTS(mcp_can_t *obj, const uint8_t command);
+
+/**
+ * Read the MCP2515's status register
+ */
+uint8_t mcpStatus(mcp_can_t *obj);
+
+/**
+ * Read mcp2515's receive status register
+ */
+uint8_t mcpReceiveStatus(mcp_can_t *obj);
+
+/**
+ * Modify bits of a register specified by a mask
+ */
+void mcpBitModify(mcp_can_t *obj, const uint8_t address, const uint8_t mask, const uint8_t data);
 
 #ifdef __cplusplus
 };
 #endif
 
-#endif    // SEEED_CAN_SPI_H
+#endif  // SEEED_CAN_SPI_H
